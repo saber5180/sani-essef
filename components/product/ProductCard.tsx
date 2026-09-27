@@ -8,9 +8,9 @@ export function ProductCard({ product }: { product: Product }) {
   const discount = discountPercent(product.price, product.oldPrice);
   return (
     <article className="group">
-      <Link href={`/product/${product.slug}`} className="img-zoom relative block aspect-[4/3] overflow-hidden bg-[#e8dccb]">
+      <Link href={`/product/${product.slug}`} className="relative block aspect-square overflow-hidden bg-[#e8dccb]">
         {image ? (
-          <Image src={image.url} alt={image.alt || product.name} fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-cover" />
+          <Image src={image.url} alt={image.alt || product.name} fill sizes="(min-width: 1024px) 33vw, 50vw" className="object-contain p-4" />
         ) : null}
         {discount ? (
           <span className="absolute left-3 top-3 bg-[#a34b2e] px-2 py-1 text-[11px] text-white">−{discount}%</span>
