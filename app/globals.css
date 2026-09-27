@@ -66,20 +66,9 @@ select:focus {
 @keyframes heroWipe {
   from {
     opacity: 0;
-    clip-path: inset(0 28% 0 0);
   }
   to {
     opacity: 1;
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes heroKenBurns {
-  from {
-    transform: scale(1.08) translate3d(0, 0, 0);
-  }
-  to {
-    transform: scale(1.18) translate3d(-2.4%, -1.2%, 0);
   }
 }
 
@@ -155,15 +144,7 @@ select:focus {
   opacity: 1;
   pointer-events: auto;
   z-index: 2;
-  animation: heroWipe 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.hero-slide img {
-  transform: scale(1.08);
-}
-
-.hero-slide.is-active img {
-  animation: heroKenBurns 6.5s ease-out forwards;
+  animation: heroWipe 0.7s ease both;
 }
 
 .hero-progress {
@@ -200,7 +181,6 @@ select:focus {
   .copy-enter,
   .hero-copy,
   .hero-slide.is-active,
-  .hero-slide.is-active img,
   .hero-progress,
   .hero-copy-line,
   .reveal {

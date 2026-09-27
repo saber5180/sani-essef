@@ -47,7 +47,7 @@ export function LandingHero({
     <section className="atelier overflow-x-hidden">
       <div className="mx-auto max-w-page px-4 pb-8 pt-4 lg:px-8 lg:pb-12 lg:pt-6">
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-stretch">
-          <div className="relative aspect-[4/3] overflow-hidden bg-[#d8cbb8] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[560px]">
+          <div className="relative aspect-[4/3] overflow-hidden bg-[#e8dccb] sm:aspect-[5/4] lg:aspect-auto lg:min-h-[520px]">
             {slides.map((item, slideIndex) => (
               <div key={item.href} className={`hero-slide ${slideIndex === index ? "is-active" : ""}`}>
                 <Image
@@ -56,7 +56,7 @@ export function LandingHero({
                   fill
                   priority={slideIndex === 0}
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
+                  className="object-contain p-5 sm:p-8"
                 />
               </div>
             ))}
