@@ -16,22 +16,26 @@ export default async function HomePage() {
   const products = publishedProducts(db);
   const banner = db.banners.find((item) => item.active) || db.banners[0];
   const projects = db.projects.filter((project) => project.published).slice(0, 4);
-  const fromPrice = products.filter((product) => product.price != null).sort((a, b) => (a.price || 0) - (b.price || 0))[0];
   const rooms = db.categories;
   const highlightIds = ["tekalu-crema", "miroir-135099", "cabine-91700", "lavabo-bidet-stand", "black-portoro", "sidi-bousaid"];
   const highlights = highlightIds.map((id) => products.find((product) => product.id === id)).filter((product): product is NonNullable<typeof product> => Boolean(product));
+  const heroSlides = products
+    .filter((product) => product.images[0]?.url)
+    .map((product) => ({
+      image: product.images[0].url,
+      title: product.name,
+      subtitle: product.shortDescription,
+      eyebrow: product.format || product.style || "Showroom",
+      price: formatPrice(product),
+      href: `/product/${product.slug}`,
+    }));
 
   return (
     <>
       <LandingHero
-        title={banner?.title || ""}
-        subtitle={banner?.subtitle || ""}
-        eyebrow={banner?.eyebrow || ""}
-        image={banner?.image || products[0]?.images[0]?.url || "/images/hero.jpg"}
-        fromPrice={fromPrice ? formatPrice(fromPrice) : undefined}
-        ctaHref={banner?.ctaHref || "/shop"}
+        slides={heroSlides}
         quoteHref={banner?.secondaryHref || "/quote"}
-        ctaLabel={t.heroCta}
+        ctaLabel="Voir le produit"
         quoteLabel={t.heroQuote}
       />
 
