@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #faf8f5;
+  color: #1a1816;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #d8c4a8;
+  color: #1a1816;
+}
+
+.img-zoom img {
+  transition: transform 0.7s ease;
+}
+
+.img-zoom:hover img {
+  transform: scale(1.04);
+}
+
+input,
+textarea,
+select {
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #8a6a4a;
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes scrollPulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scaleY(0.55);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scaleY(1);
+  }
+}
+
+.hero-zoom {
+  animation: heroZoom 7s ease-out both;
+}
+
+.hero-rise {
+  opacity: 0;
+  animation: heroRise 0.9s ease both;
+}
+
+.hero-d1 {
+  animation-delay: 0.15s;
+}
+.hero-d2 {
+  animation-delay: 0.28s;
+}
+.hero-d3 {
+  animation-delay: 0.42s;
+}
+.hero-d4 {
+  animation-delay: 0.54s;
+}
+.hero-d5 {
+  animation-delay: 0.66s;
+}
+.hero-d6 {
+  animation-delay: 0.8s;
+}
+
+.hero-scroll {
+  transform-origin: top;
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-on {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom,
+  .hero-rise,
+  .hero-scroll,
+  .reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
