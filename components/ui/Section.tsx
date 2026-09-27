@@ -12,10 +12,10 @@ export function ButtonLink({
   className?: string;
 }) {
   const styles = {
-    solid: "bg-[#1a1816] text-white hover:bg-[#8A6A4A]",
-    ghost: "border border-white text-white hover:bg-white hover:text-[#1a1816]",
-    light: "border border-[#1a1816] text-[#1a1816] hover:bg-[#1a1816] hover:text-white",
-    sand: "bg-[#8A6A4A] text-white hover:bg-[#1a1816]",
+    solid: "bg-[#1e1914] text-[#faf6ef] hover:bg-[#a34b2e]",
+    ghost: "border border-[#faf6ef] text-[#faf6ef] hover:bg-[#faf6ef] hover:text-[#1e1914]",
+    light: "border border-[#1e1914] text-[#1e1914] hover:bg-[#1e1914] hover:text-[#faf6ef]",
+    sand: "bg-[#a34b2e] text-white hover:bg-[#1e1914]",
   }[variant];
 
   return (
@@ -37,13 +37,13 @@ export function SectionHeading({
   action?: string;
 }) {
   return (
-    <div className="mb-8 flex items-end justify-between gap-4 border-b border-[#1a1816]/10 pb-4">
+    <div className="mb-8 flex items-end justify-between gap-4 border-b border-[#1e1914]/10 pb-4">
       <div>
-        <p className="text-[11px] uppercase tracking-[0.22em] text-[#8A6A4A]">{kicker}</p>
-        <h2 className="mt-1 font-serif text-[1.7rem] leading-none text-[#1a1816] md:text-[2.35rem]">{title}</h2>
+        <p className="text-[11px] uppercase tracking-[0.22em] text-[#a34b2e]">{kicker}</p>
+        <h2 className="mt-1 font-serif text-[1.8rem] leading-none tracking-[-0.03em] text-[#1e1914] md:text-[2.5rem]">{title}</h2>
       </div>
       {href && action ? (
-        <Link href={href} className="text-[13px] text-[#8A6A4A] hover:underline">
+        <Link href={href} className="text-[13px] text-[#a34b2e] underline-offset-4 hover:underline">
           {action}
         </Link>
       ) : null}

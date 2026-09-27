@@ -1,6 +1,6 @@
 import { LandingHero } from "@/components/home/LandingHero";
 import { Reveal } from "@/components/home/Reveal";
-import { ButtonLink, SectionHeading } from "@/components/ui/Section";
+import { ButtonLink } from "@/components/ui/Section";
 import { ProductCard } from "@/components/product/ProductCard";
 import { getDictionary } from "@/lib/locale";
 import { publishedProducts } from "@/lib/catalog";
@@ -16,8 +16,9 @@ export default async function HomePage() {
   const products = publishedProducts(db);
   const banner = db.banners.find((item) => item.active) || db.banners[0];
   const promos = products.filter((product) => product.promotion);
-  const projects = db.projects.filter((project) => project.published).slice(0, 3);
+  const projects = db.projects.filter((project) => project.published).slice(0, 4);
   const fromPrice = products.filter((product) => product.price != null).sort((a, b) => (a.price || 0) - (b.price || 0))[0];
+  const rooms = db.categories.slice(0, 6);
 
   return (
     <>
@@ -25,7 +26,7 @@ export default async function HomePage() {
         title={banner?.title || ""}
         subtitle={banner?.subtitle || ""}
         eyebrow={banner?.eyebrow || ""}
-        image={banner?.image || "/images/hero.jpg"}
+        image={products[0]?.images[0]?.url || banner?.image || "/images/hero.jpg"}
         fromPrice={fromPrice ? formatPrice(fromPrice) : undefined}
         ctaHref={banner?.ctaHref || "/shop"}
         quoteHref={banner?.secondaryHref || "/quote"}
@@ -34,57 +35,77 @@ export default async function HomePage() {
       />
 
       <Reveal>
-        <section className="px-0 py-10 md:mx-auto md:max-w-page md:px-8 md:py-14">
-          <div className="mb-6 px-5 md:mb-8 md:px-0">
-            <SectionHeading kicker={t.categories} title="Univers" href="/shop" action={t.seeProducts} />
+        <section className="mx-auto max-w-page overflow-hidden px-5 py-12 md:px-8 md:py-20">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-[#a34b2e]">{t.categories}</p>
+              <h2 className="mt-2 break-words font-serif text-[1.85rem] tracking-[-0.03em] sm:text-4xl md:text-5xl">Les matières du showroom</h2>
+            </div>
+            <Link href="/shop" className="shrink-0 text-sm text-[#a34b2e] underline-offset-4 hover:underline">
+              {t.seeProducts}
+            </Link>
           </div>
-          <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 md:grid md:grid-cols-5 md:gap-px md:overflow-visible md:bg-[#1a1816]/10 md:px-0">
-            {db.categories.slice(0, 5).map((category) => (
-              <Link
-                key={category.id}
-                href={`/shop/category/${category.slug}`}
-                className="img-zoom relative w-[72vw] shrink-0 snap-start overflow-hidden bg-[#ece6dc] sm:w-[46vw] md:w-auto md:aspect-[4/5]"
-              >
-                <span className="relative block aspect-[4/5]">
-                  <Image src={category.image} alt={category.name} fill sizes="40vw" className="object-cover" />
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-t from-[#1a1816]/75 to-transparent" />
-                <span className="absolute inset-x-0 bottom-0 p-4 font-serif text-xl text-white md:text-2xl">{category.name}</span>
-              </Link>
+          <ul className="mt-8 divide-y divide-[#1e1914]/10 border-y border-[#1e1914]/10 md:mt-10">
+            {rooms.map((category, index) => (
+              <li key={category.id}>
+                <Link
+                  href={`/shop/category/${category.slug}`}
+                  className="group grid grid-cols-[2.25rem_minmax(0,1fr)] items-center gap-3 py-5 sm:grid-cols-[4rem_minmax(0,1fr)_auto] sm:gap-8"
+                >
+                  <span className="font-serif text-xl text-[#a34b2e] sm:text-2xl">0{index + 1}</span>
+                  <span className="min-w-0">
+                    <span className="block break-words font-serif text-[1.35rem] leading-tight tracking-[-0.02em] transition group-hover:text-[#a34b2e] sm:text-3xl">
+                      {category.name}
+                    </span>
+                    <span className="mt-2 block max-w-xl text-sm leading-relaxed text-[#5c534a]">{category.description}</span>
+                  </span>
+                  <span className="relative hidden h-[4.5rem] w-28 overflow-hidden bg-[#e8dccb] sm:block">
+                    <Image src={category.image} alt="" fill sizes="112px" className="object-cover transition duration-700 group-hover:scale-105" />
+                  </span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto max-w-page px-5 pb-12 md:px-8 md:pb-14">
-          <SectionHeading kicker="Catalogue" title="Pièces en showroom" href="/shop" action={t.seeProducts} />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+        <section className="atelier border-y border-[#1e1914]/10">
+          <div className="mx-auto max-w-page px-5 py-12 md:px-8 md:py-20">
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-[#a34b2e]">Catalogue</p>
+                <h2 className="mt-2 font-serif text-[1.85rem] tracking-[-0.03em] sm:text-4xl md:text-5xl">Pièces en salle</h2>
+              </div>
+              <Link href="/shop" className="shrink-0 text-sm text-[#a34b2e] underline-offset-4 hover:underline">
+                {t.seeProducts}
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
         </section>
       </Reveal>
 
       {promos[0] ? (
         <Reveal>
-          <section className="bg-[#1a1816] text-white">
-            <div className="mx-auto grid max-w-page md:grid-cols-2">
-              <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[360px]">
-                <Image src={promos[0].images[0]?.url || "/images/hero.jpg"} alt={promos[0].name} fill className="object-cover" />
-              </div>
-              <div className="flex flex-col justify-center px-5 py-10 md:px-12">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-[#d8c4a8]">Offre</p>
-                <h2 className="mt-2 font-serif text-3xl md:text-4xl">{promos[0].name}</h2>
-                <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">{promos[0].shortDescription}</p>
-                <p className="mt-6 text-2xl">{formatPrice(promos[0])}</p>
-                {promos[0].oldPrice ? <p className="mt-1 text-sm text-white/45 line-through">{promos[0].oldPrice} DT</p> : null}
-                <div className="mt-6">
-                  <ButtonLink href={`/product/${promos[0].slug}`} variant="sand" className="w-full sm:w-auto">
-                    Voir le produit
-                  </ButtonLink>
-                </div>
+          <section className="mx-auto grid max-w-page items-stretch gap-0 px-5 py-12 lg:grid-cols-2 lg:px-8 lg:py-20">
+            <div className="relative min-h-[320px] overflow-hidden bg-[#e8dccb] md:min-h-[460px]">
+              <Image src={promos[0].images[0]?.url || "/images/hero.jpg"} alt={promos[0].name} fill className="object-cover" />
+              <span className="absolute left-5 top-5 bg-[#a34b2e] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white">
+                Offre showroom
+              </span>
+            </div>
+            <div className="flex flex-col justify-center border border-[#1e1914]/10 border-t-0 bg-[#faf6ef] px-5 py-8 sm:px-8 lg:border-l-0 lg:border-t lg:px-12">
+              <p className="font-serif text-3xl tracking-[-0.03em] sm:text-4xl">{promos[0].name}</p>
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-[#5c534a]">{promos[0].shortDescription}</p>
+              <p className="mt-6 font-serif text-3xl">{formatPrice(promos[0])}</p>
+              {promos[0].oldPrice ? <p className="mt-1 text-sm text-[#7a726b] line-through">{promos[0].oldPrice} DT / m²</p> : null}
+              <div className="mt-8">
+                <ButtonLink href={`/product/${promos[0].slug}`}>Voir le produit</ButtonLink>
               </div>
             </div>
           </section>
@@ -92,14 +113,28 @@ export default async function HomePage() {
       ) : null}
 
       <Reveal>
-        <section className="mx-auto max-w-page px-5 py-12 md:px-8 md:py-14">
-          <SectionHeading kicker={t.inspire} title={t.inspireTitle} href="/projects" action="Galerie" />
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-px md:bg-[#1a1816]/10">
-            {projects.map((project) => (
-              <Link key={project.id} href="/projects" className="img-zoom relative aspect-[16/10] bg-[#ece6dc] md:aspect-[4/3]">
+        <section className="mx-auto max-w-page px-5 pb-12 md:px-8 md:pb-20">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-[#a34b2e]">{t.inspire}</p>
+              <h2 className="mt-2 font-serif text-[1.85rem] tracking-[-0.03em] sm:text-4xl md:text-5xl">{t.inspireTitle}</h2>
+            </div>
+            <Link href="/projects" className="shrink-0 text-sm text-[#a34b2e] underline-offset-4 hover:underline">
+              Galerie
+            </Link>
+          </div>
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
+            {projects.map((project, index) => (
+              <Link
+                key={project.id}
+                href="/projects"
+                className={`img-zoom group relative overflow-hidden bg-[#e8dccb] ${index === 0 ? "md:col-span-2 aspect-[16/8]" : "aspect-[16/10]"}`}
+              >
                 <Image src={project.image} alt={project.title} fill className="object-cover" />
-                <span className="absolute inset-0 bg-gradient-to-t from-[#1a1816]/70 to-transparent" />
-                <span className="absolute bottom-4 left-4 font-serif text-2xl text-white">{project.title}</span>
+                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1e1914]/70 to-transparent p-5">
+                  <span className="block text-[11px] uppercase tracking-[0.18em] text-white/70">{project.room}</span>
+                  <span className="mt-1 block font-serif text-2xl text-white sm:text-3xl">{project.title}</span>
+                </span>
               </Link>
             ))}
           </div>
@@ -107,17 +142,18 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal>
-        <section className="border-y border-[#1a1816]/10 bg-white">
-          <div className="mx-auto grid max-w-page sm:grid-cols-2 md:grid-cols-4">
+        <section className="border-y border-[#1e1914]/10 bg-[#faf6ef]">
+          <div className="mx-auto grid max-w-page sm:grid-cols-2 lg:grid-cols-4">
             {[
-              [t.quality, t.qualityText],
-              [t.advice, t.adviceText],
-              [t.design, t.designText],
-              [t.near, t.nearText],
-            ].map(([title, text]) => (
-              <article key={title} className="border-b border-[#1a1816]/10 px-5 py-8 last:border-b-0 sm:border-b md:border-b-0 md:border-r md:last:border-r-0">
-                <h3 className="font-serif text-2xl">{title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#6d645c]">{text}</p>
+              ["01", t.quality, t.qualityText],
+              ["02", t.advice, t.adviceText],
+              ["03", t.design, t.designText],
+              ["04", t.near, t.nearText],
+            ].map(([num, title, text]) => (
+              <article key={title} className="border-b border-[#1e1914]/10 px-5 py-8 last:border-b-0 sm:border-r sm:odd:border-r lg:border-b-0 lg:px-8 lg:last:border-r-0">
+                <p className="font-serif text-xl text-[#a34b2e]">{num}</p>
+                <h3 className="mt-3 font-serif text-2xl tracking-[-0.02em]">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#5c534a]">{text}</p>
               </article>
             ))}
           </div>
@@ -125,28 +161,38 @@ export default async function HomePage() {
       </Reveal>
 
       <Reveal>
-        <section className="grid md:grid-cols-2">
-          <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[380px]">
-            <Image src="/images/showroom.jpg" alt="Showroom STE SANI-ESSEF" fill className="object-cover" />
-          </div>
-          <div className="flex flex-col justify-center bg-[#ece6dc] px-5 py-10 md:px-12">
-            <p className="text-[11px] uppercase tracking-[0.22em] text-[#8A6A4A]">Showroom</p>
-            <h2 className="mt-2 font-serif text-3xl leading-tight md:text-4xl">{t.showroomTitle}</h2>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-[#5c544d]">
-              {company.address}
-              <br />
-              {company.days} · {company.hours}
-            </p>
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap">
-              <ButtonLink href="/contact" className="w-full sm:w-auto">
-                Nous rendre visite
-              </ButtonLink>
-              <a href={`tel:${company.phoneTel}`} className="inline-flex h-10 items-center justify-center border border-[#1a1816] px-4 text-[13px]">
-                {company.phone}
-              </a>
-              <a href={whatsappLink(generalWhatsappMessage())} className="inline-flex h-10 items-center justify-center border border-[#1a1816] px-4 text-[13px]">
-                WhatsApp
-              </a>
+        <section className="atelier">
+          <div className="mx-auto grid max-w-page gap-6 px-5 py-12 lg:grid-cols-2 lg:px-8 lg:py-20">
+            <div className="flex flex-col justify-between border border-[#1e1914]/10 bg-[#faf6ef] px-5 py-8 sm:px-10">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.22em] text-[#a34b2e]">Carte de visite</p>
+                <h2 className="mt-3 font-serif text-[1.85rem] leading-tight tracking-[-0.03em] sm:text-4xl md:text-5xl">{t.showroomTitle}</h2>
+                <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#5c534a]">
+                  {company.address}
+                  <br />
+                  {company.days} · {company.hours}
+                </p>
+              </div>
+              <div className="mt-8 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap">
+                <ButtonLink href="/contact" className="w-full sm:w-auto">
+                  Nous rendre visite
+                </ButtonLink>
+                <a
+                  href={`tel:${company.phoneTel}`}
+                  className="inline-flex h-11 items-center justify-center border border-[#1e1914] px-5 text-[13px]"
+                >
+                  {company.phone}
+                </a>
+                <a
+                  href={whatsappLink(generalWhatsappMessage())}
+                  className="inline-flex h-11 items-center justify-center border border-[#1e1914] px-5 text-[13px]"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+            <div className="relative min-h-[320px] overflow-hidden bg-[#e8dccb] md:min-h-[460px]">
+              <Image src="/images/showroom.jpg" alt="Showroom STE SANI-ESSEF" fill className="object-cover" />
             </div>
           </div>
         </section>

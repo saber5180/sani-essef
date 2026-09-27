@@ -10,23 +10,36 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
 body {
-  background: #faf8f5;
-  color: #1a1816;
+  overflow-x: hidden;
+}
+
+body {
+  background: #faf6ef;
+  color: #1e1914;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: #d8c4a8;
-  color: #1a1816;
+  background: #e4c4b0;
+  color: #1e1914;
+}
+
+.atelier {
+  background-color: #f3ebe0;
+  background-image:
+    linear-gradient(rgba(30, 25, 20, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 25, 20, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 .img-zoom img {
-  transition: transform 0.7s ease;
+  transition: transform 0.8s ease;
 }
 
 .img-zoom:hover img {
-  transform: scale(1.04);
+  transform: scale(1.035);
 }
 
 input,
@@ -38,13 +51,22 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #8a6a4a;
+  border-color: #a34b2e;
 }
 
-@keyframes heroRise {
+@keyframes heroPan {
+  from {
+    transform: scale(1.08) translate3d(-1.2%, 0, 0);
+  }
+  to {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes logoEnter {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(18px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -52,63 +74,33 @@ select:focus {
   }
 }
 
-@keyframes heroZoom {
+@keyframes copyEnter {
   from {
-    transform: scale(1.12);
+    opacity: 0;
+    transform: translateY(14px);
   }
   to {
-    transform: scale(1);
+    opacity: 1;
+    transform: none;
   }
 }
 
-@keyframes scrollPulse {
-  0%,
-  100% {
-    opacity: 0.2;
-    transform: scaleY(0.55);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scaleY(1);
-  }
+.hero-pan {
+  animation: heroPan 8s ease-out both;
 }
 
-.hero-zoom {
-  animation: heroZoom 7s ease-out both;
+.logo-enter {
+  animation: logoEnter 0.9s ease both;
 }
 
-.hero-rise {
+.copy-enter {
   opacity: 0;
-  animation: heroRise 0.9s ease both;
-}
-
-.hero-d1 {
-  animation-delay: 0.15s;
-}
-.hero-d2 {
-  animation-delay: 0.28s;
-}
-.hero-d3 {
-  animation-delay: 0.42s;
-}
-.hero-d4 {
-  animation-delay: 0.54s;
-}
-.hero-d5 {
-  animation-delay: 0.66s;
-}
-.hero-d6 {
-  animation-delay: 0.8s;
-}
-
-.hero-scroll {
-  transform-origin: top;
-  animation: scrollPulse 1.8s ease-in-out infinite;
+  animation: copyEnter 0.85s ease 0.18s both;
 }
 
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
@@ -118,9 +110,9 @@ select:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-zoom,
-  .hero-rise,
-  .hero-scroll,
+  .hero-pan,
+  .logo-enter,
+  .copy-enter,
   .reveal {
     animation: none;
     opacity: 1;

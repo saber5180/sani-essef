@@ -8,7 +8,7 @@ const config: Config = {
         ink: "#111111",
         mist: "#F5F5F5",
         sand: "#E8E0D5",
-        wood: "#8A6A4A",
+        wood: "#a34b2e",
         stone: "#6B6560",
       },
       fontFamily: {

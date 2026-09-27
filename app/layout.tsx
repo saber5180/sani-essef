@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Fraunces, Figtree } from "next/font/google";
 import { Providers } from "@/components/providers/Providers";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { getDictionary } from "@/lib/locale";
@@ -7,13 +7,12 @@ import { readDb } from "@/lib/store";
 import { company } from "@/lib/company";
 import "./globals.css";
 
-const serif = Instrument_Serif({
+const serif = Fraunces({
   subsets: ["latin"],
-  weight: "400",
   variable: "--font-serif",
 });
 
-const sans = Inter({
+const sans = Figtree({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -40,6 +39,11 @@ export const metadata: Metadata = {
     "STE SANI-ESSEF",
     "ANI ESSEF",
   ],
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
     title: "STE SANI-ESSEF",
     description: "Ça donne envie de rénover. Carrelage et rénovation à Ksour Essef.",
