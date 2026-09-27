@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Section";
 import { Logo } from "@/components/brand/Logo";
@@ -26,6 +24,8 @@ export function LandingHero({
   ctaLabel: string;
   quoteLabel: string;
 }) {
+  const label = eyebrow || "Showroom · Ksour Essef";
+
   return (
     <section className="atelier overflow-x-hidden">
       <div className="mx-auto max-w-page px-4 pb-8 pt-4 lg:px-8 lg:pb-12 lg:pt-6">
@@ -34,11 +34,9 @@ export function LandingHero({
             <div className="hero-pan absolute inset-0">
               <Image src={image} alt="Matières STE SANI-ESSEF" fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
             </div>
-            {eyebrow ? (
-              <p className="absolute left-3 top-3 max-w-[min(18rem,calc(100%-1.5rem))] truncate border border-[#1e1914]/10 bg-[#faf6ef]/92 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-[#1e1914] sm:left-4 sm:top-4">
-                {eyebrow}
-              </p>
-            ) : null}
+            <p className="absolute left-3 top-3 max-w-[70%] truncate border border-[#1e1914]/10 bg-[#faf6ef]/92 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-[#1e1914] sm:left-4 sm:top-4">
+              {label}
+            </p>
             <p className="absolute bottom-3 right-3 border border-[#1e1914]/10 bg-[#faf6ef] px-2.5 py-1 font-serif text-sm italic text-[#1e1914] sm:bottom-4 sm:right-4">
               Échantillon matière
             </p>
@@ -49,7 +47,7 @@ export function LandingHero({
               <Logo priority />
             </div>
 
-            <div className="mt-5 min-w-0 copy-enter">
+            <div className="copy-enter mt-5 min-w-0">
               <p className="font-serif text-lg italic leading-snug text-[#a34b2e] sm:text-[1.45rem]">{company.slogan}</p>
               <h1 className="mt-2 max-w-lg break-words font-serif text-[1.5rem] leading-[1.15] text-[#1e1914] sm:text-[2.1rem] lg:text-[2.35rem]">
                 {title}

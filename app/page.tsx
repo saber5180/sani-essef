@@ -15,10 +15,11 @@ export default async function HomePage() {
   const db = await readDb();
   const products = publishedProducts(db);
   const banner = db.banners.find((item) => item.active) || db.banners[0];
-  const promos = products.filter((product) => product.promotion);
   const projects = db.projects.filter((project) => project.published).slice(0, 4);
   const fromPrice = products.filter((product) => product.price != null).sort((a, b) => (a.price || 0) - (b.price || 0))[0];
-  const rooms = db.categories.slice(0, 6);
+  const rooms = db.categories;
+  const highlightIds = ["tekalu-crema", "miroir-135099", "cabine-91700", "lavabo-bidet-stand", "black-portoro", "sidi-bousaid"];
+  const highlights = highlightIds.map((id) => products.find((product) => product.id === id)).filter((product): product is NonNullable<typeof product> => Boolean(product));
 
   return (
     <>
@@ -26,7 +27,7 @@ export default async function HomePage() {
         title={banner?.title || ""}
         subtitle={banner?.subtitle || ""}
         eyebrow={banner?.eyebrow || ""}
-        image={products[0]?.images[0]?.url || banner?.image || "/images/hero.jpg"}
+        image={banner?.image || products[0]?.images[0]?.url || "/images/hero.jpg"}
         fromPrice={fromPrice ? formatPrice(fromPrice) : undefined}
         ctaHref={banner?.ctaHref || "/shop"}
         quoteHref={banner?.secondaryHref || "/quote"}
@@ -90,23 +91,36 @@ export default async function HomePage() {
         </section>
       </Reveal>
 
-      {promos[0] ? (
+      {highlights.length ? (
         <Reveal>
-          <section className="mx-auto grid max-w-page items-stretch gap-0 px-5 py-12 lg:grid-cols-2 lg:px-8 lg:py-20">
-            <div className="relative min-h-[320px] overflow-hidden bg-[#e8dccb] md:min-h-[460px]">
-              <Image src={promos[0].images[0]?.url || "/images/hero.jpg"} alt={promos[0].name} fill className="object-cover" />
-              <span className="absolute left-5 top-5 bg-[#a34b2e] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white">
-                Offre showroom
-              </span>
-            </div>
-            <div className="flex flex-col justify-center border border-[#1e1914]/10 border-t-0 bg-[#faf6ef] px-5 py-8 sm:px-8 lg:border-l-0 lg:border-t lg:px-12">
-              <p className="font-serif text-3xl tracking-[-0.03em] sm:text-4xl">{promos[0].name}</p>
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-[#5c534a]">{promos[0].shortDescription}</p>
-              <p className="mt-6 font-serif text-3xl">{formatPrice(promos[0])}</p>
-              {promos[0].oldPrice ? <p className="mt-1 text-sm text-[#7a726b] line-through">{promos[0].oldPrice} DT / m²</p> : null}
-              <div className="mt-8">
-                <ButtonLink href={`/product/${promos[0].slug}`}>Voir le produit</ButtonLink>
+          <section className="mx-auto max-w-page px-5 py-12 md:px-8 md:py-20">
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-[#a34b2e]">Sélection</p>
+                <h2 className="mt-2 font-serif text-[1.85rem] tracking-[-0.03em] sm:text-4xl md:text-5xl">Carrelage, miroirs, cabines</h2>
               </div>
+              <Link href="/shop" className="shrink-0 text-sm text-[#a34b2e] underline-offset-4 hover:underline">
+                {t.seeProducts}
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+              {highlights.map((product) => (
+                <Link key={product.id} href={`/product/${product.slug}`} className="group grid overflow-hidden border border-[#1e1914]/10 bg-[#faf6ef] sm:grid-cols-2">
+                  <span className="relative block aspect-[4/3] bg-[#e8dccb] sm:aspect-auto sm:min-h-[220px]">
+                    {product.images[0] ? (
+                      <Image src={product.images[0].url} alt={product.name} fill className="object-cover transition duration-700 group-hover:scale-[1.03]" />
+                    ) : null}
+                    {product.promotion ? (
+                      <span className="absolute left-3 top-3 bg-[#a34b2e] px-2 py-1 text-[11px] uppercase tracking-[0.14em] text-white">Offre</span>
+                    ) : null}
+                  </span>
+                  <span className="flex flex-col justify-center px-5 py-5">
+                    <span className="text-[11px] uppercase tracking-[0.16em] text-[#a34b2e]">{product.format || product.style}</span>
+                    <span className="mt-2 font-serif text-2xl leading-tight tracking-[-0.02em]">{product.name}</span>
+                    <span className="mt-3 text-sm text-[#5c534a]">{formatPrice(product)}</span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </section>
         </Reveal>
