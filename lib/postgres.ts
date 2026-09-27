@@ -18,7 +18,3 @@ export function getPool() {
   }
   return pool;
 }
-
-export function usesPostgres() {
-  return Boolean(process.env.DATABASE_URL);
-}
